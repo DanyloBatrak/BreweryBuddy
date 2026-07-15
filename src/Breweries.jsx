@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import BreweryCharts_Type from "./BreweryCharts_Type";
+import BreweryStateChart from "./BreweryCharts_State";
 
 const Breweries = () => {
   const [breweries, setBreweries] = useState([]);
@@ -6,6 +9,7 @@ const Breweries = () => {
   const [error, setError] = useState(false);
   const [searchItem, setSearchItem] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const navigate = useNavigate();
 
   const totalCount = breweries.length;
 
@@ -69,6 +73,11 @@ const Breweries = () => {
         </div>
       </div>
 
+      <div className="App-charts">
+        <BreweryCharts_Type breweries={breweries} />
+        <BreweryStateChart breweries={breweries} />
+      </div>
+
       <div className="search-bar">
         <input
           type="text"
@@ -101,7 +110,11 @@ const Breweries = () => {
         </thead>
         <tbody>
           {filteredBreweries.map(place => (
-            <tr key={place.id}>
+            <tr
+              key={place.id}
+              onClick={() => navigate(`/breweries/${place.id}`)}
+              style={{ cursor: "pointer" }}
+            >
               <td>{place.name || "Unnamed Brewery"}</td>
               <td>{place.brewery_type}</td>
               <td>{place.city}</td>
